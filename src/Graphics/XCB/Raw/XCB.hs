@@ -19,7 +19,12 @@ LCI.include "stdlib.h"
 LCI.include "stddef.h"
 LCI.include "errno.h"
 
-
+{-|
+  'xcb_connect' will try to connect to X display.
+  Returns:
+    Nothing - in case of error
+    Just connection - in case of success
+-}
 xcb_connect:: IO (Maybe XT.Connection)
 xcb_connect = do
     ptr <- [LCI.block| void*
