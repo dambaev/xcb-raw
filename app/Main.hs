@@ -1,6 +1,14 @@
 module Main where
 
-import Lib
+import Graphics.XCB.Raw as XCB
+
+import Data.Maybe
 
 main :: IO ()
-main = someFunc
+main = do
+    mconnection <- XCB.xcb_connect
+    case mconnection of
+        Nothing-> do
+            error "failed to conenct to display"
+        Just some-> do
+            return ()
