@@ -2,7 +2,7 @@
 module Graphics.XCB.Raw.Types
   where
 
-import qualified Foreign.C.Types as FCT 
+import qualified Foreign.C.Types as FCT
 import qualified Data.Word as DW
 import qualified Foreign.ForeignPtr as FFP(ForeignPtr)
 import qualified Foreign.Ptr as FP(Ptr)
@@ -68,3 +68,21 @@ data CreateWindow = CreateWindow
   , cwSize:: Size
   , cwPosition:: Position
   }
+
+defCreateWindow:: CreateWindow
+defCreateWindow = CreateWindow
+  { cwParent = Nothing
+  , cwSize = Size 0 0
+  , cwPosition = Position 0 0
+  }
+
+createWindowParent:: XID-> CreateWindow-> CreateWindow
+createWindowParent xid wnd = wnd
+  { cwParent = Just xid
+  }
+
+createWindowPosition:: Position -> CreateWindow-> CreateWindow
+createWindowPosition pos wnd = wnd{ cwPosition = pos }
+
+createWindowSize::Size-> CreateWindow -> CreateWindow
+createWindowSize rect wnd = wnd { cwSize = rect }
