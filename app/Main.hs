@@ -6,7 +6,7 @@ import Data.Maybe
 
 main :: IO ()
 main = do
-    mconnection <- XCB.xcb_connect
+    mconnection <- XCB.xcb_connectIO
     case mconnection of
         Nothing-> do
             error "failed to conenct to display"
