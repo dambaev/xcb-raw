@@ -12,8 +12,14 @@ main = do
             error "failed to conenct to display"
         Just connection-> do
             mxid <- xcb_generate_idIO connection
-            case mxid of
+            _ <- case mxid of
                 Nothing-> error "failed to generate xid"
-                Just xid -> do
-                    putStrLn $ "xid = " ++ (show xid)
-                    return ()
+                _ -> return ()
+            mwid <- createWindowIO connection
+                $ createWindowPosition (Position 100 100)
+                $ createWindowSize (Size 100 100)
+                $ defCreateWindow
+            _ <- case mwid of
+                Nothing-> error "failed to create window"
+                _ -> return ()
+            return ()
