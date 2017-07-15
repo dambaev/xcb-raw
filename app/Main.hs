@@ -3,6 +3,7 @@ module Main where
 import Graphics.XCB.Raw as XCB
 
 import Data.Maybe
+import Control.Monad
 
 main :: IO ()
 main = do
@@ -12,8 +13,4 @@ main = do
             error "failed to conenct to display"
         Just connection-> do
             mxid <- xcb_generate_idIO connection
-            case mxid of
-                Nothing-> error "failed to generate xid"
-                Just xid -> do
-                    putStrLn $ "xid = " ++ (show xid)
-                    return ()
+            when (mxid == Nothing) $! error "failed to generate xid"
