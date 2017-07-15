@@ -25,8 +25,8 @@ LCI.include "errno.h"
     Nothing - in case of error
     Just connection - in case of success
 -}
-xcb_connect:: IO (Maybe XT.Connection)
-xcb_connect = do
+xcb_connectIO:: IO (Maybe XT.Connection)
+xcb_connectIO = do
     ptr <- [LCI.block| void*
         {
             xcb_connection_t * p_ret = NULL;
@@ -49,7 +49,6 @@ xcb_connect = do
                     } |]
             FC.newForeignPtr ptr (free_conn ptr) >>=
                 return . Just . XT.Connection
-
 
 
 
