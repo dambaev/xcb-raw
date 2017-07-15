@@ -36,6 +36,8 @@ xcb_connect = do
     if FP.nullPtr == ptr
         then return Nothing
         else do
+            -- if connection has been successfull, setup cleanup routine
+            -- which will be called on GC cleanup
             let free_conn ptr =
                     [LCI.block|void {
                         xcb_disconnect($(void* ptr));
