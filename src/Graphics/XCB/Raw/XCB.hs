@@ -50,5 +50,27 @@ xcb_connectIO = do
             FC.newForeignPtr ptr (free_conn ptr) >>=
                 return . Just . XT.Connection
 
-
+{-|
+    this function generates new xcb_window_t value be requesting it from
+    server
+-}
+xcb_generate_idIO
+    :: XT.Connection -- ^ current XCB connection
+    -> IO (Maybe XT.XID) -- ^ Just XID - in case of success, Nothing - on failure
+xcb_generate_idIO (XT.Connection conn ) = do
+    FFP.withForeignPtr conn $ \pconn-> do
+        idOrZero <- fmap fromIntegral [LCI.block| uint32_t
+            {
+                xcb_window_t ret = 0;
+                ret = xcb_generate_id($(void* pconn));
+                if( xcb_connection_has_error( $(void* pconn)))
+                {
+                    // I don't know yet if I should handle errno, because it can produce race condition
+                    return 0;
+                }
+                return ret;
+            } |]
+        return $! if idOrZero == 0
+            then Nothing
+            else Just $ XT.XID idOrZero
 
